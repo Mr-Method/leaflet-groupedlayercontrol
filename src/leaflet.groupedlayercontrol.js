@@ -19,9 +19,9 @@ L.Control.GroupedLayers = L.Control.extend({
     // A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
     // that will be used for sorting the layers, when `sortLayers` is `true`.
     // The function receives both the `L.Layer` instances and their names, as in
-    // `sortFunction(layerA, layerB, nameA, nameB)`.
+    // `sortFunction(layerA, layerB, nameA, nameB, groupA, groupB)`.
     // By default, it sorts layers alphabetically by their name.
-    sortFunction: function (layerA, layerB, nameA, nameB) {
+    sortFunction: function (layerA, layerB, nameA, nameB, groupA, groupB) {
       if (nameA < nameB) {
         return -1;
       } else if (nameB < nameA) {
@@ -176,7 +176,7 @@ L.Control.GroupedLayers = L.Control.extend({
 
     if (this.options.sortLayers) {
       this._layers.sort(L.bind(function (a, b) {
-        return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
+        return this.options.sortFunction(a.layer, b.layer, a.name, b.name, a.group.name, b.group.name);
       }, this));
     }
   },
