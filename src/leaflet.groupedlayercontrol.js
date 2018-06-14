@@ -10,7 +10,9 @@ L.Control.GroupedLayers = L.Control.extend({
     autoZIndex: true,
     exclusiveGroups: [],
     groupCheckboxes: false,
+    noGroupCheckbox: [],
     groupsCollapsable: false,
+    noCollapse: [],
     groupsExpandedClass: 'leaflet-control-layers-group-collapse-default',
     groupsCollapsedClass: 'leaflet-control-layers-group-expand-default',
     // Whether to sort the layers. When `false`, layers will keep the order
@@ -162,11 +164,15 @@ L.Control.GroupedLayers = L.Control.extend({
     }
 
     var exclusive = (this._indexOf(this.options.exclusiveGroups, group) !== -1);
+    var noGroupCheckbox = (this._indexOf(this.options.noGroupCheckbox, group) !== -1);
+    var noCollapse = (this._indexOf(this.options.noCollapse, group) !== -1);
 
     _layer.group = {
       name: group,
       id: groupId,
-      exclusive: exclusive
+      exclusive: exclusive,
+      noGroupCheckbox: noGroupCheckbox,
+      noCollapse: noCollapse
     };
 
     if (this.options.autoZIndex && layer.setZIndex) {
@@ -305,7 +311,7 @@ L.Control.GroupedLayers = L.Control.extend({
 
         if (obj.group.name !== '' && !obj.group.exclusive) {
           // ------ add a group checkbox with an _onInputClickGroup function
-          if (this.options.groupCheckboxes) {
+          if (this.options.groupCheckboxes && !obj.group.noGroupCheckbox) {
             var groupInput = document.createElement('input');
             groupInput.type = 'checkbox';
             groupInput.className = 'leaflet-control-layers-group-selector';
@@ -316,7 +322,7 @@ L.Control.GroupedLayers = L.Control.extend({
           }
         }
 
-        if (this.options.groupsCollapsable) {
+        if (this.options.groupsCollapsable && !obj.group.noCollapse) {
           groupContainer.classList.add('group-collapsable');
           groupContainer.classList.add('collapsed');
 
