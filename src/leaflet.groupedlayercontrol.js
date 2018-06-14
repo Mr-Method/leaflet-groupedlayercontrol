@@ -403,7 +403,7 @@ L.Control.GroupedLayers = L.Control.extend({
         var groupCheckbox = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-group-selector')[0];
         if (input.checked && !this._map.hasLayer(obj.layer)) {
           if (groupCheckbox !== undefined) {
-            var group = input.parentElement.getElementsByClassName('leaflet-control-layers-selector');
+            var group = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-selector');
             var groupLen = group.length;
             var checked = 0;
             for (x = 0; x < groupLen; x++) {
