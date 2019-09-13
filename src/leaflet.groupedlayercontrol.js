@@ -183,16 +183,23 @@ L.Control.GroupedLayers = L.Control.extend({
     if (this.options.groupCheckboxes) {
       var inputs = this._form.getElementsByTagName('input');
       for (i = 0; i < inputs.length; i++) {
-        var groupInput = inputs[i];
-        if (groupInput.className == 'leaflet-control-layers-group-selector') {
-          var groupedInputs = groupInput.getElementsByTagName('input');
-          var checked = 0;
-          for (n = 0; n < groupedInputs.length; n++) {
-            if (groupedInputs[n].checked) {
-              checked++;
+        input = inputs[i];
+        if (input.className === 'leaflet-control-layers-selector') {
+          obj = this._getLayer(input.layerId);
+
+          var groupCheckbox = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-group-selector')[0];
+          if (groupCheckbox !== undefined) {
+            var group = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-selector');
+            var groupLen = group.length;
+            var checked = 0;
+            for (x = 0; x < groupLen; x++) {
+              if (group[x].checked) {
+                checked++;
+              }
             }
+            groupCheckbox.checked = checked && checked == group.length;
+            groupCheckbox.indeterminate = checked && checked < group.length;
           }
-          groupInput.checked = checked == groupedInputs.length;
         }
       }
     }
@@ -352,25 +359,22 @@ L.Control.GroupedLayers = L.Control.extend({
         obj = this._getLayer(input.layerId);
 
         var groupCheckbox = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-group-selector')[0];
+        if (groupCheckbox !== undefined) {
+          var group = input.parentElement.parentElement.getElementsByClassName('leaflet-control-layers-selector');
+          var groupLen = group.length;
+          var checked = 0;
+          for (x = 0; x < groupLen; x++) {
+            if (group[x].checked) {
+              checked++;
+            }
+          }
+          groupCheckbox.checked = checked && checked == group.length;
+          groupCheckbox.indeterminate = checked && checked < group.length;
+        }
+
         if (input.checked && !this._map.hasLayer(obj.layer)) {
-          if (groupCheckbox !== undefined) {
-            var group = input.parentElement.getElementsByClassName('leaflet-control-layers-selector');
-            var groupLen = group.length;
-            var checked = 0;
-            for (x = 0; x < groupLen; x++) {
-              if (group[x].checked) {
-                checked++;
-              }
-            }
-            if (checked == groupLen) {
-              groupCheckbox.checked = true;
-            }
-          }
           this._map.addLayer(obj.layer);
-        } else if (!input.checked && this._map.hasLayer(obj.layer)) {
-          if (groupCheckbox !== undefined) {
-            groupCheckbox.checked = false;
-          }
+        } else if (!input.checked) {
           this._map.removeLayer(obj.layer);
         }
       }
