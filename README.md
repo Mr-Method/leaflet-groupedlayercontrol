@@ -8,8 +8,8 @@ Also supports making groups exclusive (radio instead of checkbox).
 
 ![preview](preview.png)
 
-Demos: [Basic](http://ismyrnow.github.io/leaflet-groupedlayercontrol/example/basic.html) |
-[Advanced](http://ismyrnow.github.io/leaflet-groupedlayercontrol/example/advanced.html)
+Demos: [Basic](https://mr-method.github.io/leaflet-groupedlayercontrol/example/basic.html) |
+[Advanced](https://mr-method.github.io/leaflet-groupedlayercontrol/example/advanced.html)
 
 ## Installation
 
